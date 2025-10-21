@@ -3,42 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>IMSHU 說明圖 LIFF</title>
+    <title>IM SHU 使用說明</title>
   </head>
   <body>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-      const LIFF_ID = "2008333589-W41ZxmXo"; // 你的 LIFF ID
-      const gdrive = "https://drive.google.com/uc?export=view&id=1yQXP6GMNYJZUbULfUHB6Csv0AZG1MJYm"; // Google Drive 圖片直連
+      const LIFF_ID = "2008333589-W41ZxmXo";
+      const img = "https://drive.google.com/uc?export=view&id=1yQXP6GMNYJZUbULfUHB6Csv0AZG1MJYm";
 
       (async () => {
-        try {
-          await liff.init({ liffId: LIFF_ID });
+        await liff.init({ liffId: LIFF_ID });
+        if (!liff.isInClient()) { alert("請從 LINE 圖文選單開啟"); return; }
 
-          if (!liff.isInClient()) {
-            alert("請從 LINE 圖文選單中開啟此連結");
-            return;
-          }
+        // 先送文字，再送圖片（順序固定）
+        await liff.sendMessages([
+          { type: "text", text: "使用說明" },
+          { type: "image", originalContentUrl: img, previewImageUrl: img }
+        ]);
 
-          // 先發一段文字
-          await liff.sendMessages([
-            {
-              type: "text",
-              text: "📘 這是 IM SHU 的使用說明："
-            },
-            {
-              type: "image",
-              originalContentUrl: gdrive,
-              previewImageUrl: gdrive
-            }
-          ]);
-
-          // 關閉 LIFF 視窗
-          liff.closeWindow();
-
-        } catch (err) {
-          alert("發生錯誤：" + err);
-        }
+        liff.closeWindow();
       })();
     </script>
   </body>
