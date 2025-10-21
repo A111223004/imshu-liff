@@ -1,19 +1,39 @@
 <!doctype html>
 <html>
-  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>IMSHU LIFF Send Image</title>
+  </head>
   <body>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-      const LIFF_ID = "YOUR_LIFF_ID"; // 待會在 LINE Developers 取得
-      const original = "https://YOUR_HOST/path/to/image.png";        // 原圖 HTTPS
-      const preview  = "https://YOUR_HOST/path/to/image_preview.png";// 預覽圖 HTTPS
+      // 你的 LIFF ID
+      const LIFF_ID = "2008333589-W41ZxmXo";
+
+      // 你的圖片（Google Drive 直連）
+      const gdrive = "https://drive.google.com/uc?export=view&id=1yQXP6GMNYJZUbULfUHB6Csv0AZG1MJYm";
 
       (async () => {
+        // 初始化 LIFF
         await liff.init({ liffId: LIFF_ID });
-        if (!liff.isInClient()) { alert("請在 LINE 內開啟"); return; }
+
+        // 檢查是否在 LINE 內開啟
+        if (!liff.isInClient()) {
+          alert("請在 LINE 內開啟此連結（例如從圖文選單點進來）");
+          return;
+        }
+
+        // 發送圖片訊息
         await liff.sendMessages([
-          { type: "image", originalContentUrl: original, previewImageUrl: preview }
+          {
+            type: "image",
+            originalContentUrl: gdrive,
+            previewImageUrl: gdrive
+          }
         ]);
+
+        // 發送完自動關閉 LIFF 頁面
         liff.closeWindow();
       })();
     </script>
