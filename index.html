@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+  <body>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+      const LIFF_ID = "YOUR_LIFF_ID"; // 待會在 LINE Developers 取得
+      const original = "https://YOUR_HOST/path/to/image.png";        // 原圖 HTTPS
+      const preview  = "https://YOUR_HOST/path/to/image_preview.png";// 預覽圖 HTTPS
+
+      (async () => {
+        await liff.init({ liffId: LIFF_ID });
+        if (!liff.isInClient()) { alert("請在 LINE 內開啟"); return; }
+        await liff.sendMessages([
+          { type: "image", originalContentUrl: original, previewImageUrl: preview }
+        ]);
+        liff.closeWindow();
+      })();
+    </script>
+  </body>
+</html>
