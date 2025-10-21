@@ -8,41 +8,26 @@
   <body>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <script>
-      // 你的 LIFF ID
       const LIFF_ID = "2008333589-W41ZxmXo";
 
-      // 使用說明圖片（GitHub Pages 上的公開網址）
-      const IMG_URL = "https://a111223004.github.io/imshu-liff/guide.png";
-      
+      // ⬇️ 兩個都用 GitHub Pages 的「純圖片直連」（先用同一張也可以）
+      const IMG_ORI = "https://a111223004.github.io/imshu-liff/guide.png";
+      const IMG_PRE = "https://a111223004.github.io/imshu-liff/guide.png";
+
       (async () => {
         try {
-          // 初始化 LIFF
           await liff.init({ liffId: LIFF_ID });
+          if (!liff.isInClient()) { alert("請從 LINE 圖文選單開啟"); return; }
 
-          // 確認是否在 LINE App 內打開
-          if (!liff.isInClient()) {
-            alert("請從 LINE 圖文選單內開啟此連結。");
-            return;
-          }
-
-          // 先發文字，再發圖片
+          // 先送文字，再送圖片
           await liff.sendMessages([
-            {
-              type: "text",
-              text: "使用說明"
-            },
-            {
-              type: "image",
-              originalContentUrl: IMG_URL,
-              previewImageUrl: IMG_URL
-            }
+            { type: "text", text: "使用說明" },
+            { type: "image", originalContentUrl: IMG_ORI, previewImageUrl: IMG_PRE }
           ]);
 
-          // 傳送後自動關閉 LIFF 頁面
           liff.closeWindow();
-
-        } catch (err) {
-          alert("發送失敗，請確認圖片網址可公開讀取。\n詳細錯誤：" + err);
+        } catch (e) {
+          alert("圖片送出失敗：請確認 URL 可直接顯示 PNG/JPG。\n" + e);
         }
       })();
     </script>
